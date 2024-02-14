@@ -7,22 +7,30 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import java.awt.Component;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import controller.LoginController;
+
 import javax.swing.JPasswordField;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.Box;
-import javax.swing.JRadioButton;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.awt.event.ActionEvent;
 
 
 
 public class Login extends JFrame {
 	private static final long serialVersionUID = 1L;
+	Connection connection;
 	
-	private JTextField textField;
+	private JTextField usernameField;
 	private JPasswordField passwordField;
 	
-	public Login() {
+	public Login(Connection connection) {
+		this.connection = connection;
 		setTitle("AUSport");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -43,9 +51,9 @@ public class Login extends JFrame {
 		lblNewLabel_1.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		panel_1.add(lblNewLabel_1);
 		
-		textField = new JTextField();
-		panel_1.add(textField);
-		textField.setColumns(10);
+		usernameField = new JTextField();
+		panel_1.add(usernameField);
+		usernameField.setColumns(10);
 		
 		JPanel panel_2 = new JPanel();
 		getContentPane().add(panel_2);
@@ -69,17 +77,29 @@ public class Login extends JFrame {
 		panel_4.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		
-		JButton btnNewButton = new JButton("Login");
-		btnNewButton.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		panel_4.add(btnNewButton);
+		JButton loginBtn = new JButton("Login");
+		loginBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String username = usernameField.getText();
+				String password = String.valueOf(passwordField.getPassword());
+				if(LoginController.AuthenticateUser(connection, username, password)){
+					JOptionPane.showMessageDialog(loginBtn, "Login Successful!");
+				}else {
+					JOptionPane.showMessageDialog(loginBtn, "Wrong Username or Password","Login Failed!", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+		});
+		loginBtn.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		panel_4.add(loginBtn);
 		
 		Component verticalStrut = Box.createVerticalStrut(20);
 		panel_4.add(verticalStrut);
 		
-		JButton btnNewButton_1 = new JButton("SignUp");
-		btnNewButton_1.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		btnNewButton_1.setBackground(Color.LIGHT_GRAY);
-		panel_4.add(btnNewButton_1);
+		JButton signupBtn = new JButton("SignUp");
+		signupBtn.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		signupBtn.setBackground(Color.LIGHT_GRAY);
+		panel_4.add(signupBtn);
 		
 		setBounds(100,100,349,498);
 		setResizable(false);
