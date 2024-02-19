@@ -8,6 +8,6 @@ public interface UserDAO extends DAO {
     public long updateUser(User u);
     public long deleteUser(User u);
 
-    public List<User> getAll();
+    public List<User> getAllUsers();
     
 }

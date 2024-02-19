@@ -20,8 +20,14 @@ public class UserDAOImpl implements UserDAO {
     }
     
     @Override
-    public void setup() throws Exception {
-       connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/AUSport", "au_admin", "admin1234");
+    public void setup() {
+       String query = "CREATE TABLE users (username CHAR(8) NOT NULL, hash VARBINARY(32) NOT NULL, salt VARBINARY(16) NOT NULL, role VARCHAR(30) NOT NULL, PRIMARY KEY (username));";
+       try {
+    	   Statement stmt = connection.createStatement();
+    	   stmt.executeUpdate(query); 
+       }catch(SQLException e) {
+    	   System.out.println(e.getErrorCode());
+       }
         
     }
 
@@ -98,7 +104,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public List<User> getAll() {
+    public List<User> getAllUsers() {
         String query = "SELECT * FROM users";
         List<User>  users = new ArrayList<>();
         try{

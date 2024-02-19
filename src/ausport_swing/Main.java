@@ -4,11 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.List;
 
-import model.User;
-import model.UserDAOImpl;
+import controller.SignUpController;
+import model.*;
+import view.ChooseView;
 import view.Login;
 
 public class Main {
+	
 	
 	
 
@@ -20,10 +22,13 @@ public class Main {
 		String password = DatabaseConfig.DB_PASSWORD;
 		String connectionString = String.format("jdbc:mysql://%s:%s/%s",host,port,name);
 		
-		
 		try {
 		Connection connection = DriverManager.getConnection(connectionString,user,password);
-		new Login(connection);
+		
+		UserDAOImpl uDAO = new UserDAOImpl(connection);
+		for(User u : uDAO.getAllUsers()) {
+			System.out.println(u.getUsername() + " " + u.getRole());
+		}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -31,6 +36,7 @@ public class Main {
 	}
 
 }
+
 
 
 

@@ -3,6 +3,7 @@ package model;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,4 +66,25 @@ public class FieldDAOImpl implements FieldDAO {
         }
         return fields;
     }
+	@Override
+	public List<Field> getFieldsByType(FieldType fType) {
+		String query ="SELECT * FROM fields WHERE type = ?";
+		List<Field> fields = new ArrayList<>();
+		try {
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setString(1, fType.getType());
+			ResultSet set = stmt.executeQuery();
+			while(set.next()) {
+				int id = set.getInt("id");
+                int capacity = set.getInt("capacity");
+                String type = set.getString("type");
+				Field f = new Field(id, capacity, type);
+				fields.add(f);
+			}
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return fields;
+	}
 }

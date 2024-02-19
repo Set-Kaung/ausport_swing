@@ -64,6 +64,7 @@ public class Login extends JFrame {
 		panel_2.add(lblNewLabel_2);
 		
 		passwordField = new JPasswordField();
+		passwordField.setEchoChar('*');
 		passwordField.setColumns(10);
 		panel_2.add(passwordField);
 		
