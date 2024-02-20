@@ -1,8 +1,12 @@
 package ausport_swing;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.List;
+
+import javax.swing.ImageIcon;
 
 import controller.SignUpController;
 import model.*;
@@ -12,6 +16,7 @@ import view.UserMain;
 
 public class Main {
 	
+	//Baketball.png taken from - https://pngtree.com/freepng/basketball-players_4993343.html
 	
 	
 
@@ -30,7 +35,7 @@ public class Main {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }

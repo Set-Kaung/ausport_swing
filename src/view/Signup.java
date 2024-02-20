@@ -46,11 +46,12 @@ public class Signup extends JFrame {
 		flowLayout.setHgap(20);
 		getContentPane().add(panel_1);
 		
-		JLabel lblNewLabel = new JLabel("Username:");
+		JLabel lblNewLabel = new JLabel("StudentID:");
 		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		panel_1.add(lblNewLabel);
 		
 		usernameField = new JTextField();
+		usernameField.setToolTipText("Format: uXXXXXXX");
 		usernameField.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 		panel_1.add(usernameField);
 		usernameField.setColumns(10);
@@ -88,7 +89,7 @@ public class Signup extends JFrame {
 		
 		passwordConfirmField = new JPasswordField();
 		passwordConfirmField.setToolTipText("Confirm Password");
-		passwordConfirmField.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		passwordConfirmField.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		passwordConfirmField.setColumns(10);
 		panel_3.add(passwordConfirmField);
 		
@@ -109,22 +110,20 @@ public class Signup extends JFrame {
 				String username = usernameField.getText();
 				String password = String.valueOf(passwordField.getPassword());
 				String confirmPassword = String.valueOf(passwordConfirmField.getPassword());
-				switch (SignUpController.signUpUser(connection, username, password, confirmPassword)) {
-				case SignUpController.SUCCESS:{
+				int code = SignUpController.signUpUser(connection, username, password, confirmPassword);
+				if(code == SignUpController.SUCCESS){
 					JOptionPane.showMessageDialog(signUpBtn,"Sign Up Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
-				}
-				case SignUpController.PASSWORD_NOT_MATCH:{
+					dispose();
+				}else if(code == SignUpController.PASSWORD_NOT_MATCH){
 					JOptionPane.showMessageDialog(signUpBtn,"Password does not match!", "Error", JOptionPane.ERROR_MESSAGE);
 				}
-				case SignUpController.DATABASE_ERROR:{
+				else if (code == SignUpController.DATABASE_ERROR){
 					JOptionPane.showMessageDialog(signUpBtn,"Database Error", "Error", JOptionPane.ERROR_MESSAGE);
 				}
-				case SignUpController.WRONG_ID:{
+				else if (code == SignUpController.WRONG_ID){
 					JOptionPane.showMessageDialog(signUpBtn,"Username should be u6xxxxxx", "Error", JOptionPane.ERROR_MESSAGE);
-				}
-				default:{
+				}else{
 					JOptionPane.showMessageDialog(signUpBtn,"Internal Error", "Error", JOptionPane.ERROR_MESSAGE);
-				}
 				}
 			}
 		});
@@ -136,6 +135,8 @@ public class Signup extends JFrame {
 		JButton btnNewButton_1 = new JButton("Back");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				new Login(connection);
+				dispose();
 			}
 		});
 		panel_8.add(btnNewButton_1);

@@ -12,11 +12,15 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.MediaTracker;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.List;
 
@@ -34,7 +38,7 @@ public class UserMain extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("Choose Your Sport:");
 		panel.add(lblNewLabel);
-		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 18));
+		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 22));
 		
 		JPanel mainPanel = new JPanel();
 		getContentPane().add(mainPanel);
@@ -54,7 +58,17 @@ public class UserMain extends JFrame {
 		FieldDAOImpl fDAO = new FieldDAOImpl(connection);
 		List<FieldType> fields = fDAO.getFieldTypes();
 		for(FieldType ft: fields) {
+			Path filePath = Paths.get("src","assests",ft.toString()+".png");
+			ImageIcon img = new ImageIcon(filePath.toString());
 			JButton btn = new JButton(ft.toString());
+			if(img.getImageLoadStatus() == MediaTracker.COMPLETE) {
+				btn.setIcon(img);
+				btn.setHorizontalTextPosition(JButton.CENTER);
+				btn.setVerticalTextPosition(JButton.BOTTOM);
+				btn.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+			}else {
+				btn.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+			}
 			btn.setSize(100,30);
 			panel.add(btn);
 		}

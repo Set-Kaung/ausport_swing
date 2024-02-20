@@ -12,20 +12,7 @@ public class Field {
     public Field(int fieldID, int capacity, String type){
         this.fieldID = fieldID;
         this.capcity = capacity;
-        switch (type) {
-            case "Football":
-                this.type = FieldType.Football;
-                break;
-            case "Basketball":
-                this.type = FieldType.Basketball;
-                break;
-            case "Tennis":
-                this.type = FieldType.Tennis;
-                break;
-            case "Badminton":
-                this.type = FieldType.Badminton;
-                break;
-        }
+        this.type = FieldType.valueOf(type);
     }
 
     public int getFieldID() {
