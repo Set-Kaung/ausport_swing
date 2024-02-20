@@ -87,4 +87,21 @@ public class FieldDAOImpl implements FieldDAO {
 		
 		return fields;
 	}
+	public List<FieldType> getFieldTypes(){
+		List<FieldType> fieldTypes = new ArrayList<>();
+		String query = "SELECT DISTINCT `type` FROM fields";
+		try {
+			Statement stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				String type = rs.getString(1);
+				fieldTypes.add(FieldType.valueOf(type));
+			}
+			
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return fieldTypes;
+	}
 }

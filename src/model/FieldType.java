@@ -7,10 +7,16 @@ public enum FieldType{
     Badminton("Badminton");
 
     private String type;
+    
     FieldType(String t){
         type = t;
     }
     String getType(){
         return type;
     }
+    
+    public String toString() {
+    	return this.type;
+    }
+    
 }

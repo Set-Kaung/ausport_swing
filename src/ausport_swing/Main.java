@@ -8,6 +8,7 @@ import controller.SignUpController;
 import model.*;
 import view.ChooseView;
 import view.Login;
+import view.UserMain;
 
 public class Main {
 	
@@ -25,10 +26,7 @@ public class Main {
 		try {
 		Connection connection = DriverManager.getConnection(connectionString,user,password);
 		
-		UserDAOImpl uDAO = new UserDAOImpl(connection);
-		for(User u : uDAO.getAllUsers()) {
-			System.out.println(u.getUsername() + " " + u.getRole());
-		}
+		new Login(connection);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
