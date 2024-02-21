@@ -19,11 +19,11 @@ import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
 
 import javax.swing.JPanel;
 
-public class ChooseView extends JFrame {
+public class SportsView extends JFrame {
 	
 	static DateTimePicker dateTimePicker;
 	
-	public ChooseView() {
+	public SportsView() {
 		
 		this.setPreferredSize(new Dimension(300,450));
 		DatePickerSettings dateSettings;
