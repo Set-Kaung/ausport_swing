@@ -43,7 +43,7 @@ public class ChooseField extends JFrame {
 		FieldDAOImpl fDAO = new FieldDAOImpl(connection);
 		List<Field> fields = fDAO.getFieldsByType(this.fType);
 		for(Field f : fields) {
-			JBtn 
+//			JBtn 
 		}
 	}
 
