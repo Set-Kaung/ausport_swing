@@ -13,6 +13,7 @@ public class SignUpController {
 	public static final int PASSWORD_NOT_MATCH = -2;
 	public static final int DATABASE_ERROR = -3;
 	public static final int SUCCESS = 0;
+	
 	public static int signUpUser(Connection connection, String username,String firstPassword, String secondPassword) {
 		if(!username.matches("u\\d{7}")) {
 			

@@ -41,14 +41,14 @@ public class SportsView extends JFrame {
 		getContentPane().add(panel);
 		
 		dateTimePicker = new DateTimePicker(dateSettings, timeSettings);
-		dateTimePicker.addDateTimeChangeListener(new SampleDateTimeChangeListener());
+		dateTimePicker.addDateTimeChangeListener(new DateTimeChangeListen());
 		panel.add(dateTimePicker);
 		
 		
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
-	private static class SampleDateTimeChangeListener implements DateTimeChangeListener {
+	private static class DateTimeChangeListen implements DateTimeChangeListener {
 
 //        /**
 //         * dateTimePickerName, This holds a chosen name for the component that we are listening to,

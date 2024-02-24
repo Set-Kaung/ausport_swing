@@ -141,5 +141,23 @@ public class ReservationDAOImpl implements ReservationDAO {
      return 0;
     }
 
+	@Override
+	public List<LocalDateTime> getReservationTimesByFieldID(int id) {
+		List<LocalDateTime> times = new ArrayList<>();
+		String query = "SELECT startTime, endTime FROM reservations WHERE fieldID = ?";
+		try {
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setInt(1, id);
+			ResultSet st = stmt.executeQuery();
+			while(st.next()) {
+				times.add(st.getTimestamp("startTime").toLocalDateTime());
+				times.add(st.getTimestamp("endTime").toLocalDateTime());
+			}
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return times;
+	}
+
     
 }
