@@ -7,21 +7,19 @@ import java.sql.Connection;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-public class CustomFrame extends JFrame {
+public abstract class CustomFrame extends JFrame {
 
 	private static final long serialVersionUID = 920413463961465805L;
+	
 	protected static Connection connection;
 	private static Dimension screenReso = Toolkit.getDefaultToolkit().getScreenSize();
 	private static double width = screenReso.getWidth();
 	private static double height = screenReso.getHeight();
 
-	public CustomFrame() {
-
-	}
-	
 	public static void setConnection(Connection conn) {
 		connection  = conn;
 	}
+	
 	protected void setupFrame() {
 		pack();
 		setVisible(true);
@@ -35,4 +33,6 @@ public class CustomFrame extends JFrame {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setResizable(false);
 	}
+	
+	
 }
