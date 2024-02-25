@@ -25,6 +25,7 @@ import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
 
 import controller.ReservationController;
+import model.FieldType;
 import model.ReservationDAOImpl;
 
 public class ReservationView extends CustomFrame {
@@ -36,7 +37,7 @@ public class ReservationView extends CustomFrame {
 	static HashMap<LocalTime,Boolean> reserved;
 
 
-	public ReservationView(String username, int fieldID) {
+	public ReservationView(String username, int fieldID, FieldType ft) {
 
 		ReservationDAOImpl dao = new ReservationDAOImpl(connection);
 		reservedTimes = dao.getReservationTimesByFieldID(fieldID);
@@ -63,24 +64,38 @@ public class ReservationView extends CustomFrame {
 		getContentPane().add(timePanel);
 
 		JPanel panel_2 = new JPanel();
-		FlowLayout flowLayout_2 = (FlowLayout) panel_2.getLayout();
-		flowLayout_2.setVgap(15);
 		getContentPane().add(panel_2);
-
-		JButton btnNewButton = new JButton("Reserve");
-		btnNewButton.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		btnNewButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				LocalDate date = dateTimePicker.getDatePicker().getDate();
-				LocalTime startTime = dateTimePicker.getTimePicker().getTime();
-				LocalTime endTime = dateTimePicker.getTimePicker().getTime().plusHours(1);
-				ReservationController.reserveField(connection, fieldID,username, LocalDateTime.of(date, startTime), LocalDateTime.of(date, endTime));
-				new ChooseSportView(username);
-				dispose();
-			}
-		});
-		panel_2.add(btnNewButton);
+		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.Y_AXIS));
+		
+		JPanel panel = new JPanel();
+		panel_2.add(panel);
+		
+				JButton btnNewButton = new JButton("Reserve");
+				panel.add(btnNewButton);
+				btnNewButton.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+				
+				JPanel panel_3 = new JPanel();
+				panel_2.add(panel_3);
+				
+				BackButton backBtn = new BackButton();
+				backBtn.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						new ChooseFieldView(username,ft);
+						dispose();
+					}
+				});
+				panel_3.add(backBtn);
+				btnNewButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						LocalDate date = dateTimePicker.getDatePicker().getDate();
+						LocalTime startTime = dateTimePicker.getTimePicker().getTime();
+						LocalTime endTime = dateTimePicker.getTimePicker().getTime().plusHours(1);
+						ReservationController.reserveField(connection, fieldID,username, LocalDateTime.of(date, startTime), LocalDateTime.of(date, endTime));
+						new ChooseSportView(username);
+						dispose();
+					}
+				});
 
 
 

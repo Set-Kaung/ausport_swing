@@ -91,7 +91,7 @@ public class ChooseSportView extends CustomFrame {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					new ChooseFieldView(ft, username);
+					new ChooseFieldView(username, ft);
 					dispose();
 				}
 

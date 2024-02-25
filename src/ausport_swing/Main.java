@@ -22,8 +22,12 @@ public class Main {
 		
 		try {
 		Connection connection = DriverManager.getConnection(connectionString,user,password);
+		
 		CustomFrame.setConnection(connection);
+		
 		new LoginView();
+		
+		
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

@@ -2,7 +2,7 @@ package model;
 
 import java.time.*;
 
-public class Reservation {
+public class Reservation implements Comparable<Reservation> {
     private int id;
     private int fieldID;
     private String username;
@@ -55,5 +55,11 @@ public class Reservation {
     }
     public int getId() {
         return id;
-    }    
+    }
+
+	@Override
+	public int compareTo(Reservation r) {
+
+		return this.startTime.compareTo(r.startTime);
+	}    
 }

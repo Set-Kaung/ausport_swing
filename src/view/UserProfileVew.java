@@ -3,7 +3,10 @@ package view;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -16,6 +19,13 @@ import javax.swing.table.DefaultTableModel;
 import model.Field;
 import model.Reservation;
 import model.ReservationDAOImpl;
+import java.awt.BorderLayout;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
+
+
 
 public class UserProfileVew extends CustomFrame {
 
@@ -30,17 +40,38 @@ public class UserProfileVew extends CustomFrame {
 
 		JPanel panel = new JPanel();
 		getContentPane().add(panel);
-
-		JLabel lblNewLabel = new JLabel("Profile");
-		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 20));
-		panel.add(lblNewLabel);
+		panel.setLayout(new BorderLayout(0, 0));
+		
+		BackButton backBtn = new BackButton();
+		panel.add(backBtn, BorderLayout.WEST);
+		
+				JLabel lblNewLabel = new JLabel("Profile");
+				lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+				panel.add(lblNewLabel, BorderLayout.CENTER);
+				lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 20));
+				
+				JButton btnNewButton_1 = new JButton("Change Password");
+				btnNewButton_1.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						new PasswordChangeView(username);
+						dispose();
+					}
+				});
+				panel.add(btnNewButton_1, BorderLayout.EAST);
+				btnNewButton_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		backBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ChooseSportView(username);
+				dispose();
+			}
+		});
 
 		JPanel panel_2 = new JPanel();
 		getContentPane().add(panel_2);
 		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.Y_AXIS));
 
 		JLabel lblNewLabel_1 = new JLabel("Your Reservations");
-		lblNewLabel_1.setFont(new Font("Times New Roman", Font.PLAIN, 19));
+		lblNewLabel_1.setFont(new Font("Times New Roman", Font.PLAIN, 17));
 		panel_2.add(lblNewLabel_1);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -69,6 +100,21 @@ public class UserProfileVew extends CustomFrame {
 
 		JPanel panel_1 = new JPanel();
 		getContentPane().add(panel_1);
+		panel_1.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel_3 = new JPanel();
+		panel_1.add(panel_3, BorderLayout.CENTER);
+		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.Y_AXIS));
+		
+		JPanel panel_4 = new JPanel();
+		panel_3.add(panel_4);
+		
+		JButton btnNewButton = new JButton("Edit");
+		btnNewButton.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		panel_4.add(btnNewButton);
+		
+		
+
 		setupFrame();
 
 
@@ -76,21 +122,25 @@ public class UserProfileVew extends CustomFrame {
 
 	private static DefaultTableModel fillTable() {
 		String[] columnHeaders = {"No.", "Field", "Capacity","Type", "Start Time", "End Time"};
+		DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("dd-MM-yyy HH:mm:ss");
 		ReservationDAOImpl dao = new ReservationDAOImpl(connection);
 		HashMap<Reservation,Field> reserves = dao.getReservationsByUsername(username);
 		String[][] rows = new String[reserves.size()][];
 		int i = 0;
-		for(Reservation r : reserves.keySet()) {
+		List<Reservation> reservations = new ArrayList<>(reserves.keySet());
+		Collections.sort(reservations);
+		for(Reservation r : reservations) {
 			String[] data = new String[columnHeaders.length];
 			data[0] = String.valueOf(i+1);
 			data[1] = String.valueOf(reserves.get(r).getFieldID());
 			data[2] = String.valueOf(reserves.get(r).getCapcity());
 			data[3] = reserves.get(r).getType().toString();
-			data[4] = r.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-			data[5] = r.getEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+			data[4] = r.getStartTime().format(dateTimeFormat);
+			data[5] = r.getEndTime().format(dateTimeFormat);
 			rows[i] = data;
 			i+=1;
 		}
+		
 		return new DefaultTableModel(rows, columnHeaders);
 	}
 

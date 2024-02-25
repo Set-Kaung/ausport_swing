@@ -22,16 +22,13 @@ public abstract class CustomFrame extends JFrame {
 	
 	protected void setupFrame() {
 		pack();
-		setVisible(true);
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setResizable(false);
 		Dimension frameSize = this.getSize();
 		int x = (int) ((width/2) - (frameSize.getWidth()/2));
 		int y = (int) ((height/2) - (frameSize.getHeight()/2));
 		this.setLocation(x, y);
-		setVisible(true);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setResizable(false);
+		setVisible(true);
 	}
 	
 	

@@ -27,7 +27,7 @@ public class ChooseFieldView extends CustomFrame {
 	private FieldType fType;
 	private static String username;
 
-	public ChooseFieldView(FieldType fType, String u) {
+	public ChooseFieldView(String u,FieldType fType) {
 		this.fType = fType;
 		username = u;
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -36,23 +36,19 @@ public class ChooseFieldView extends CustomFrame {
 		JPanel panel = new JPanel();
 		getContentPane().add(panel);
 
-		Path filePath = Paths.get("src","assests","Back"+".png");
-		ImageIcon img = new ImageIcon(filePath.toString());
 		panel.setLayout(new BorderLayout(0, 0));
-		JButton btnNewButton = new JButton();
-		btnNewButton.addActionListener(new ActionListener() {
+		BackButton backButton = new BackButton();
+		
+		backButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new ChooseSportView(username);
 				dispose();
 			}
 		});
-		panel.add(btnNewButton, BorderLayout.WEST);
-		btnNewButton.setOpaque(false);
-		btnNewButton.setContentAreaFilled(false);
-		btnNewButton.setBorderPainted(false);
-		btnNewButton.setIcon(img);
-		btnNewButton.setFocusPainted(false);
+		panel.add(backButton, BorderLayout.WEST);
+		
+		
 
 		JLabel lblNewLabel = new JLabel("Choose Field");
 		panel.add(lblNewLabel, BorderLayout.CENTER);
@@ -87,7 +83,7 @@ public class ChooseFieldView extends CustomFrame {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					new ReservationView(username,f.getFieldID());
+					new ReservationView(username,f.getFieldID(),f.getType());
 					dispose();
 				}
 
