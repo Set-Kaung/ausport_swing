@@ -6,7 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -19,13 +18,13 @@ import javax.swing.WindowConstants;
 
 import controller.LoginController;
 
-public class Login extends CustomFrame {
+public class LoginView extends CustomFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JTextField usernameField;
 	private JPasswordField passwordField;
 
-	public Login(Connection connection) {
+	public LoginView() {
 		setTitle("AUSport");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -84,7 +83,7 @@ public class Login extends CustomFrame {
 				String password = String.valueOf(passwordField.getPassword());
 				if (LoginController.AuthenticateUser(connection, username, password)) {
 					JOptionPane.showMessageDialog(loginBtn, "Login Successful!");
-					new UserMain(connection, username);
+					new ChooseSportView(username);
 					dispose();
 				} else {
 					JOptionPane.showMessageDialog(loginBtn, "Wrong Username or Password", "Login Failed!",
@@ -107,7 +106,7 @@ public class Login extends CustomFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new Signup(connection);
+				new SignupView();
 				dispose();
 			}
 

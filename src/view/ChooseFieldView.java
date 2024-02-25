@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Connection;
 import java.util.List;
 
 import javax.swing.Box;
@@ -23,15 +22,13 @@ import model.Field;
 import model.FieldDAOImpl;
 import model.FieldType;
 
-public class ChooseField extends CustomFrame {
+public class ChooseFieldView extends CustomFrame {
 	private static final long serialVersionUID = 1L;
-	private Connection connection;
 	private FieldType fType;
 	private static String username;
 
-	public ChooseField(Connection connection, FieldType fType, String u) {
+	public ChooseFieldView(FieldType fType, String u) {
 		this.fType = fType;
-		this.connection = connection;
 		username = u;
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 //		setMinimumSize(new Dimension(300,200));
@@ -46,7 +43,7 @@ public class ChooseField extends CustomFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new UserMain(connection, username);
+				new ChooseSportView(username);
 				dispose();
 			}
 		});
@@ -90,7 +87,7 @@ public class ChooseField extends CustomFrame {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					new Reserve(connection, username,f.getFieldID());
+					new ReservationView(username,f.getFieldID());
 					dispose();
 				}
 

@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Connection;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -22,13 +21,11 @@ import javax.swing.SwingConstants;
 import model.FieldDAOImpl;
 import model.FieldType;
 
-public class UserMain extends CustomFrame {
+public class ChooseSportView extends CustomFrame {
 	private static final long serialVersionUID = 1L;
 	private static String username;
-	private Connection connection;
 
-	public UserMain(Connection connection, String u) {
-		this.connection = connection;
+	public ChooseSportView(String u) {
 		username = u;
 		this.setBounds(500, 500, 370, 233);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -41,7 +38,7 @@ public class UserMain extends CustomFrame {
 		profileBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new Profile(connection, username);
+				new UserProfileVew(username);
 				dispose();
 			}
 		});
@@ -58,7 +55,7 @@ public class UserMain extends CustomFrame {
 				int result = JOptionPane.showConfirmDialog(logoutBtn, "Are you sure you want to logout?",
 						"Logging out?", JOptionPane.YES_OPTION, JOptionPane.NO_OPTION);
 				if (result == JOptionPane.YES_OPTION) {
-					new Login(connection);
+					new LoginView();
 					username = new String();
 					dispose();
 				}
@@ -76,7 +73,7 @@ public class UserMain extends CustomFrame {
 	}
 
 	private void setUpButtons(JPanel panel) {
-		FieldDAOImpl fDAO = new FieldDAOImpl(this.connection);
+		FieldDAOImpl fDAO = new FieldDAOImpl(connection);
 		List<FieldType> fields = fDAO.getFieldTypes();
 		for (FieldType ft : fields) {
 			Path filePath = Paths.get("src", "assests", ft.toString() + ".png");
@@ -94,7 +91,7 @@ public class UserMain extends CustomFrame {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					new ChooseField(connection, ft, username);
+					new ChooseFieldView(ft, username);
 					dispose();
 				}
 

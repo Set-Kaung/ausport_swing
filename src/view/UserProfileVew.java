@@ -2,7 +2,6 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.Font;
-import java.sql.Connection;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
@@ -18,17 +17,14 @@ import model.Field;
 import model.Reservation;
 import model.ReservationDAOImpl;
 
-public class Profile extends CustomFrame {
+public class UserProfileVew extends CustomFrame {
 
 
 	private static final long serialVersionUID = -3636110769976570691L;
-
-	private static Connection connection;
 	private static String username;
 
 
-	public Profile(Connection conn, String u) {
-		connection = conn;
+	public UserProfileVew(String u) {
 		username = u;
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 

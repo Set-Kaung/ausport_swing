@@ -4,7 +4,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -25,10 +24,10 @@ import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
 
-import model.Reservation;
+import controller.ReservationController;
 import model.ReservationDAOImpl;
 
-public class Reserve extends CustomFrame {
+public class ReservationView extends CustomFrame {
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,7 +36,7 @@ public class Reserve extends CustomFrame {
 	static HashMap<LocalTime,Boolean> reserved;
 
 
-	public Reserve(Connection connection, String username, int fieldID) {
+	public ReservationView(String username, int fieldID) {
 
 		ReservationDAOImpl dao = new ReservationDAOImpl(connection);
 		reservedTimes = dao.getReservationTimesByFieldID(fieldID);
@@ -76,9 +75,8 @@ public class Reserve extends CustomFrame {
 				LocalDate date = dateTimePicker.getDatePicker().getDate();
 				LocalTime startTime = dateTimePicker.getTimePicker().getTime();
 				LocalTime endTime = dateTimePicker.getTimePicker().getTime().plusHours(1);
-				Reservation r = new Reservation(fieldID, username, LocalDateTime.of(date, startTime), LocalDateTime.of(date, endTime));
-				dao.insertReservation(r);
-				new UserMain(connection, username);
+				ReservationController.reserveField(connection, fieldID,username, LocalDateTime.of(date, startTime), LocalDateTime.of(date, endTime));
+				new ChooseSportView(username);
 				dispose();
 			}
 		});

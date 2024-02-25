@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.Connection;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -9,13 +10,17 @@ import javax.swing.WindowConstants;
 public class CustomFrame extends JFrame {
 
 	private static final long serialVersionUID = 920413463961465805L;
-
+	protected static Connection connection;
 	private static Dimension screenReso = Toolkit.getDefaultToolkit().getScreenSize();
 	private static double width = screenReso.getWidth();
 	private static double height = screenReso.getHeight();
 
 	public CustomFrame() {
 
+	}
+	
+	public static void setConnection(Connection conn) {
+		connection  = conn;
 	}
 	protected void setupFrame() {
 		pack();

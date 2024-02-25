@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.sql.Connection;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -20,14 +19,14 @@ import javax.swing.JTextField;
 
 import controller.SignUpController;
 
-public class Signup extends CustomFrame {
+public class SignupView extends CustomFrame {
 
 	private static final long serialVersionUID = -943517075235426268L;
 	private JTextField usernameField;
 	private JPasswordField passwordField;
 	private JPasswordField passwordConfirmField;
 
-	public Signup(Connection connection) {
+	public SignupView() {
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
 		JPanel panel = new JPanel();
@@ -134,7 +133,7 @@ public class Signup extends CustomFrame {
 				if(code == SignUpController.SUCCESS){
 					JOptionPane.showMessageDialog(signUpBtn,"Sign Up Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
 					dispose();
-					new Login(connection);
+					new LoginView();
 				}else if(code == SignUpController.PASSWORD_NOT_MATCH){
 					JOptionPane.showMessageDialog(signUpBtn,"Password does not match!", "Error", JOptionPane.ERROR_MESSAGE);
 				}
@@ -157,7 +156,7 @@ public class Signup extends CustomFrame {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new Login(connection);
+				new LoginView();
 				dispose();
 			}
 		});

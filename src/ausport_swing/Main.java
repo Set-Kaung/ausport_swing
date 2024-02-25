@@ -3,7 +3,8 @@ package ausport_swing;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-import view.Login;
+import view.CustomFrame;
+import view.LoginView;
 
 public class Main {
 	
@@ -21,8 +22,8 @@ public class Main {
 		
 		try {
 		Connection connection = DriverManager.getConnection(connectionString,user,password);
-
-		new Login(connection);
+		CustomFrame.setConnection(connection);
+		new LoginView();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
