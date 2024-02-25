@@ -1,5 +1,9 @@
 package view;
 
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,8 +12,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.github.lgooddatepicker.components.DatePickerSettings;
@@ -17,29 +22,23 @@ import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateTimeChangeListener;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
-import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
-import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
 
 import model.Reservation;
 import model.ReservationDAOImpl;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.FlowLayout;
-import java.awt.Font;
+public class Reserve extends CustomFrame {
 
-public class Reserve extends JFrame {
-	
 	private static final long serialVersionUID = 1L;
+
 	static DateTimePicker dateTimePicker;
 	static List<LocalDateTime> reservedTimes;
 	static HashMap<LocalTime,Boolean> reserved;
+
+
 	public Reserve(Connection connection, String username, int fieldID) {
-		
+
 		ReservationDAOImpl dao = new ReservationDAOImpl(connection);
 		reservedTimes = dao.getReservationTimesByFieldID(fieldID);
 		reserved = new HashMap<>();
@@ -47,31 +46,32 @@ public class Reserve extends JFrame {
 			LocalTime timefmt = time.toLocalTime();
 			reserved.putIfAbsent(timefmt, true);
 		}
-		
+
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-		
+
 		JPanel panel_1 = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
 		flowLayout.setVgap(20);
 		getContentPane().add(panel_1);
-		
+
 		JLabel lblNewLabel = new JLabel("Choose Your Time");
 		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		panel_1.add(lblNewLabel);
-		
+
 		JPanel timePanel = new JPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) timePanel.getLayout();
 		flowLayout_1.setVgap(20);
 		getContentPane().add(timePanel);
-		
+
 		JPanel panel_2 = new JPanel();
 		FlowLayout flowLayout_2 = (FlowLayout) panel_2.getLayout();
 		flowLayout_2.setVgap(15);
 		getContentPane().add(panel_2);
-		
+
 		JButton btnNewButton = new JButton("Reserve");
 		btnNewButton.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		btnNewButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				LocalDate date = dateTimePicker.getDatePicker().getDate();
 				LocalTime startTime = dateTimePicker.getTimePicker().getTime();
@@ -83,17 +83,17 @@ public class Reserve extends JFrame {
 			}
 		});
 		panel_2.add(btnNewButton);
-		
-		
-		
+
+
+
 		DatePickerSettings dateSettings;
 		TimePickerSettings timeSettings;
 		dateSettings = new DatePickerSettings();
 		timeSettings = new TimePickerSettings();
-		
-		
-		
-		
+
+
+
+
 		dateSettings.setAllowEmptyDates(false);
 		timeSettings.setAllowEmptyTimes(false);
 		dateSettings.setAllowKeyboardEditing(false);
@@ -109,16 +109,13 @@ public class Reserve extends JFrame {
 		}
 		dateTimePicker.getTimePicker().getSettings().generatePotentialMenuTimes(generateTimeList(dateTimePicker.getDatePicker().getDate()));
 		timePanel.add(dateTimePicker);
-		
-		pack();
-		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
+		setupFrame();
 	}
-	
-	
+
+
 	private static ArrayList<LocalTime> generateTimeList(LocalDate date){
-		ArrayList<LocalTime> time = new ArrayList<LocalTime>();
+		ArrayList<LocalTime> time = new ArrayList<>();
 		LocalTime start;
 		if(date.isEqual(LocalDate.now())) {
 	            start = LocalTime.now().plusHours(1).withMinute(0);
@@ -146,48 +143,34 @@ public class Reserve extends JFrame {
 			}
 			return !d.isBefore(LocalDate.now());
 		}
-		
+
 	}
-	
 
-	
+
+
 	private static class DateTimeChangeListen implements DateTimeChangeListener {
-
-//      /**
-//       * dateTimePickerName, This holds a chosen name for the component that we are listening to,
-//       * for generating time change messages in the demo.
-//       */
-//      public String dateTimePickerName;
-//
-//      /**
-//       * Constructor.
-//       */
-//      private SampleDateTimeChangeListener(String dateTimePickerName) {
-//          this.dateTimePickerName = dateTimePickerName;
-//      }
 
       /**
        * dateOrTimeChanged, This function will be called whenever the in date or time in the
        * applicable DateTimePicker has changed.
        */
-      public void dateOrTimeChanged(DateTimeChangeEvent event) {
-          // Report on the overall DateTimeChangeEvent.
-          String messageStart = "\n\nThe LocalDateTime in " + "application" + " has changed from: (";
+      @Override
+	public void dateOrTimeChanged(DateTimeChangeEvent event) {
 
-          
-          // Report on any DateChangeEvent, if one exists.
+
+          // Generate available time list based on new date of date picker
           DateChangeEvent dateEvent = event.getDateChangeEvent();
           if (dateEvent != null) {
         	  		LocalDate d = dateEvent.getNewDate();
         	  		dateTimePicker.getTimePicker().getSettings().generatePotentialMenuTimes(generateTimeList(d));
           }
-          // Report on any TimeChangeEvent, if one exists.
-          TimeChangeEvent timeEvent = event.getTimeChangeEvent();
-          if (timeEvent != null) {
-              String timeChangeMessage = "\nThe TimePicker value has changed from ("
-                  + timeEvent.getOldTime() + ") to (" + timeEvent.getNewTime() + ").";
-              System.out.println(timeChangeMessage);
-          }
+
+//          TimeChangeEvent timeEvent = event.getTimeChangeEvent();
+//          if (timeEvent != null) {
+//              String timeChangeMessage = "\nThe TimePicker value has changed from ("
+//                  + timeEvent.getOldTime() + ") to (" + timeEvent.getNewTime() + ").";
+//              System.out.println(timeChangeMessage);
+//          }
       }
   }
 }

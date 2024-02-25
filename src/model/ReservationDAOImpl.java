@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -74,9 +75,9 @@ public class ReservationDAOImpl implements ReservationDAO {
     }
 
     @Override
-    public List<Reservation> getReservationsByUsername(String username) {
-        String query = "SELECT * FROM reservations WHERE username = ?";
-        List<Reservation> userReservations = new ArrayList<>();
+    public HashMap<Reservation, Field> getReservationsByUsername(String username) {
+        String query = "SELECT r.id,r.fieldID,r.username,r.startTime,r.endTime,f.capacity,f.`type` FROM reservations r LEFT JOIN fields f ON r.fieldID  = f.id WHERE username = ?;";
+        HashMap<Reservation, Field> userReservations = new HashMap<>();
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, username);
@@ -87,7 +88,11 @@ public class ReservationDAOImpl implements ReservationDAO {
                 String userName = s.getString("username");
                 LocalDateTime dateTime = s.getTimestamp("startTime").toLocalDateTime();
                 LocalDateTime endTime = s.getTimestamp("endTime").toLocalDateTime();
-                userReservations.add(new Reservation(id, fieldID, userName, dateTime, endTime));
+                Reservation r = new Reservation(id, fieldID, userName, dateTime, endTime);
+                	int capacity = s.getInt("capacity");
+                	String type = s.getString("type");
+                	Field f = new Field(fieldID,capacity,type);
+                	userReservations.put(r, f);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
