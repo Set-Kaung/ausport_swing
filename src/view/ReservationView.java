@@ -13,7 +13,9 @@ import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.github.lgooddatepicker.components.DatePickerSettings;
@@ -90,10 +92,17 @@ public class ReservationView extends CustomFrame {
 					public void actionPerformed(ActionEvent e) {
 						LocalDate date = dateTimePicker.getDatePicker().getDate();
 						LocalTime startTime = dateTimePicker.getTimePicker().getTime();
-						LocalTime endTime = dateTimePicker.getTimePicker().getTime().plusHours(1);
-						ReservationController.reserveField(connection, fieldID,username, LocalDateTime.of(date, startTime), LocalDateTime.of(date, endTime));
-						new ChooseSportView(username);
-						dispose();
+						switch(ReservationController.makeReservation(connection, fieldID,username, LocalDateTime.of(date, startTime))){
+						case ReservationController.SUCCESS:
+							JOptionPane.showMessageDialog(panel_1,"Successfully made a reservation","Success", JOptionPane.PLAIN_MESSAGE);
+							new PrimaryView(username);
+							dispose();
+							break;
+						case ReservationController.FAIL:
+							JOptionPane.showMessageDialog(panel_1, "Your reservation was not successful!","Reservation Failed", JOptionPane.ERROR_MESSAGE);
+							break;
+							
+						}
 					}
 				});
 
@@ -135,7 +144,7 @@ public class ReservationView extends CustomFrame {
 		}else {
 			start = LocalTime.of(6, 0);
 		}
-		LocalTime end = LocalTime.of(18,0);
+		LocalTime end = LocalTime.of(19,0);
 		for(LocalTime currentTime = start; currentTime.isBefore(end);currentTime = currentTime.plusHours(1)) {
 			if(!reserved.isEmpty()) {
 				if(!reserved.containsKey(currentTime)) {

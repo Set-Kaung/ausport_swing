@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,12 +11,14 @@ import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
+import controller.ReservationController;
 import model.Field;
 import model.Reservation;
 import model.ReservationDAOImpl;
@@ -32,7 +35,7 @@ public class UserProfileVew extends CustomFrame {
 
 	private static final long serialVersionUID = -3636110769976570691L;
 	private static String username;
-
+	private static ArrayList<String> columnHeadersList = new ArrayList<>();
 
 	public UserProfileVew(String u) {
 		username = u;
@@ -61,7 +64,7 @@ public class UserProfileVew extends CustomFrame {
 				btnNewButton_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		backBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ChooseSportView(username);
+				new PrimaryView(username);
 				dispose();
 			}
 		});
@@ -92,7 +95,6 @@ public class UserProfileVew extends CustomFrame {
 
 
 
-
 		scrollPane.setViewportView(reservations);
 		scrollPane.setPreferredSize(new Dimension(900,350));
 
@@ -109,7 +111,34 @@ public class UserProfileVew extends CustomFrame {
 		JPanel panel_4 = new JPanel();
 		panel_3.add(panel_4);
 		
-		JButton btnNewButton = new JButton("Edit");
+		JButton btnNewButton = new JButton("Delete");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = reservations.getSelectedRow();			
+				int fieldID = Integer.parseInt(reservations.getValueAt(row,columnHeadersList.indexOf("Field")).toString());
+				String timeString = reservations.getValueAt(row,columnHeadersList.indexOf("Start Time")).toString();
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+				LocalDateTime startTime = LocalDateTime.parse(timeString,formatter);
+				
+				StringBuilder b = new StringBuilder();
+				b.append("Do you want to delete the following reservation: ");
+				b.append("Reservation for ");
+				b.append(reservations.getValueAt(row,columnHeadersList.indexOf("Type")).toString());
+				b.append(" at ");
+				b.append(reservations.getValueAt(row,columnHeadersList.indexOf("Start Time")).toString());
+				int result = JOptionPane.showConfirmDialog(panel,b.toString(), "Are you sure?", JOptionPane.WARNING_MESSAGE);
+				if(result == JOptionPane.YES_OPTION) {
+					int status = ReservationController.deleteReservation(connection,username,fieldID,startTime);
+					if(status == ReservationController.FAIL) {
+						JOptionPane.showMessageDialog(panel, "Failed to delete reseravtion","Failed", JOptionPane.ERROR_MESSAGE);
+					}else {
+						JOptionPane.showMessageDialog(panel, "Reservation deleted.", "Success", JOptionPane.INFORMATION_MESSAGE);
+						reservations.setModel(fillTable());
+					}
+					
+				}
+			}
+		});
 		btnNewButton.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		panel_4.add(btnNewButton);
 		
@@ -122,6 +151,9 @@ public class UserProfileVew extends CustomFrame {
 
 	private static DefaultTableModel fillTable() {
 		String[] columnHeaders = {"No.", "Field", "Capacity","Type", "Start Time", "End Time"};
+		for(String s: columnHeaders) {
+			columnHeadersList.add(s);
+		}
 		DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("dd-MM-yyy HH:mm:ss");
 		ReservationDAOImpl dao = new ReservationDAOImpl(connection);
 		HashMap<Reservation,Field> reserves = dao.getReservationsByUsername(username);
@@ -141,7 +173,15 @@ public class UserProfileVew extends CustomFrame {
 			i+=1;
 		}
 		
-		return new DefaultTableModel(rows, columnHeaders);
+		return new DefaultTableModel(rows, columnHeaders) {
+			private static final long serialVersionUID = 8182291226478041908L;
+
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
 	}
 
 }

@@ -83,7 +83,7 @@ public class LoginView extends CustomFrame {
 				String password = String.valueOf(passwordField.getPassword());
 				if (LoginController.AuthenticateUser(connection, username, password)) {
 					JOptionPane.showMessageDialog(loginBtn, "Login Successful!");
-					new ChooseSportView(username);
+					new PrimaryView(username);
 					dispose();
 				} else {
 					JOptionPane.showMessageDialog(loginBtn, "Wrong Username or Password", "Login Failed!",

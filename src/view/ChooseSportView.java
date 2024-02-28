@@ -14,7 +14,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -34,34 +33,20 @@ public class ChooseSportView extends CustomFrame {
 		getContentPane().add(panel);
 		panel.setLayout(new BorderLayout(10, 0));
 
-		JButton profileBtn = new JButton("Profile");
-		profileBtn.addActionListener(new ActionListener() {
+		BackButton backBtn = new BackButton();
+		backBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new UserProfileVew(username);
+				new PrimaryView(username);
 				dispose();
 			}
 		});
-		panel.add(profileBtn, BorderLayout.WEST);
+		panel.add(backBtn, BorderLayout.WEST);
 
 		JLabel lblNewLabel = new JLabel("Choose Your Sport:");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lblNewLabel);
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 22));
-		JButton logoutBtn = new JButton("Logout");
-		logoutBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int result = JOptionPane.showConfirmDialog(logoutBtn, "Are you sure you want to logout?",
-						"Logging out?", JOptionPane.YES_OPTION, JOptionPane.NO_OPTION);
-				if (result == JOptionPane.YES_OPTION) {
-					new LoginView();
-					username = new String();
-					dispose();
-				}
-			}
-		});
-		panel.add(logoutBtn, BorderLayout.EAST);
 
 		JPanel mainPanel = new JPanel();
 		getContentPane().add(mainPanel);

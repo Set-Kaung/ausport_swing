@@ -134,11 +134,13 @@ public class ReservationDAOImpl implements ReservationDAO {
     }
 
     @Override
-    public long deleteReservation(Reservation r) {
-        String query = "DELETE FROM reservations WHERE id = ?";
+    public long deleteReservation(String username, int fieldID, Timestamp startTime) {
+        String query = "DELETE FROM reservations WHERE username = ? AND fieldID = ? AND startTime = ?";
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setInt(1, r.getId());
+            stmt.setString(1, username);
+            	stmt.setInt(2, fieldID);
+            	stmt.setTimestamp(3, startTime);
             return stmt.executeUpdate();
         } catch (Exception e) {
             System.out.println(e.getMessage());

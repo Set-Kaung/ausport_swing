@@ -136,6 +136,8 @@ public class SignupView extends CustomFrame {
 					new LoginView();
 				}else if(code == SignUpController.PASSWORD_NOT_MATCH){
 					JOptionPane.showMessageDialog(signUpBtn,"Password does not match!", "Error", JOptionPane.ERROR_MESSAGE);
+				}else if(code == SignUpController.USER_ALREADY_EXISTS) {
+					JOptionPane.showMessageDialog(signUpBtn,"User already exists", "Existing Account", JOptionPane.INFORMATION_MESSAGE);
 				}
 				else if (code == SignUpController.DATABASE_ERROR){
 					JOptionPane.showMessageDialog(signUpBtn,"Database Error", "Error", JOptionPane.ERROR_MESSAGE);
