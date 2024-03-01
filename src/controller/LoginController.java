@@ -2,7 +2,7 @@ package controller;
 
 import java.sql.Connection;
 
-import model.UserDAOImpl;
+import model.UserDAOMySQLImpl;
 import util.HashedPassword;
 import model.Role;
 import model.User;
@@ -11,7 +11,7 @@ public class LoginController {
 	
 
 	public static boolean AuthenticateUser(Connection connection, String username, String password) {
-		UserDAOImpl uDAO = new UserDAOImpl(connection);
+		UserDAOMySQLImpl uDAO = new UserDAOMySQLImpl(connection);
 		User dbUser = uDAO.getUserByUsername(username);
 		if(dbUser == null) {
 			return false;
@@ -20,7 +20,7 @@ public class LoginController {
 	}
 	
 	public static Role GetUserRole(Connection connection, String username) {
-		UserDAOImpl uDAO = new UserDAOImpl(connection);
+		UserDAOMySQLImpl uDAO = new UserDAOMySQLImpl(connection);
 		User user = uDAO.getUserByUsername(username);
 		return user.getRole();
 	}

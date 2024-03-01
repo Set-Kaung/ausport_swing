@@ -7,10 +7,10 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FieldDAOImpl implements FieldDAO {
+public class FieldDAOMySQLImpl implements FieldDAO {
 	Connection connection;
 
-	public FieldDAOImpl(Connection connection) {
+	public FieldDAOMySQLImpl(Connection connection) {
 		this.connection = connection;
 	}
 

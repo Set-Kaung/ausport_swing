@@ -12,10 +12,10 @@ import java.util.List;
 import util.HashedPassword;
 
 
-public class UserDAOImpl implements UserDAO {
+public class UserDAOMySQLImpl implements UserDAO {
     private Connection connection;
 
-    public UserDAOImpl(Connection connection){
+    public UserDAOMySQLImpl(Connection connection){
         this.connection = connection;
     }
     

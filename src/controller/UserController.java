@@ -3,7 +3,7 @@ package controller;
 import java.sql.Connection;
 
 import model.User;
-import model.UserDAOImpl;
+import model.UserDAOMySQLImpl;
 import util.HashedPassword;
 
 public class UserController {
@@ -17,7 +17,7 @@ public class UserController {
 		if(!newPassword.equals(confrimPassword)) {
 			return PASSWORD_NOT_MATCH;
 		}
-		UserDAOImpl dao = new UserDAOImpl(connection);
+		UserDAOMySQLImpl dao = new UserDAOMySQLImpl(connection);
 		User dbUser = dao.getUserByUsername(username);
 		if(HashedPassword.authenticate(username, oldPassword, dbUser)) {
 			User userUpdate = new User(username, HashedPassword.getHashedPassword(newPassword),dbUser.getRole());

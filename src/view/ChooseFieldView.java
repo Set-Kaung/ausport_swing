@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import model.Field;
-import model.FieldDAOImpl;
+import model.FieldDAOMySQLImpl;
 import model.FieldType;
 
 public class ChooseFieldView extends CustomFrame {
@@ -66,7 +66,7 @@ public class ChooseFieldView extends CustomFrame {
 	}
 
 	private void setUpPanel(JPanel p) {
-		FieldDAOImpl fDAO = new FieldDAOImpl(connection);
+		FieldDAOMySQLImpl fDAO = new FieldDAOMySQLImpl(connection);
 		Path filePath = Paths.get("src","assests",fType.toString()+"Field.png");
 		ImageIcon img = new ImageIcon(filePath.toString());
 		List<Field> fields = fDAO.getFieldsByType(this.fType);

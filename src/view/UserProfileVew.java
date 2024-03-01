@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import controller.ReservationController;
 import model.Field;
 import model.Reservation;
-import model.ReservationDAOImpl;
+import model.ReservationDAOMySQLImpl;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -155,7 +155,7 @@ public class UserProfileVew extends CustomFrame {
 			columnHeadersList.add(s);
 		}
 		DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("dd-MM-yyy HH:mm:ss");
-		ReservationDAOImpl dao = new ReservationDAOImpl(connection);
+		ReservationDAOMySQLImpl dao = new ReservationDAOMySQLImpl(connection);
 		HashMap<Reservation,Field> reserves = dao.getReservationsByUsername(username);
 		String[][] rows = new String[reserves.size()][];
 		int i = 0;

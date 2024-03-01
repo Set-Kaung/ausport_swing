@@ -28,7 +28,7 @@ import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
 
 import controller.ReservationController;
 import model.FieldType;
-import model.ReservationDAOImpl;
+import model.ReservationDAOMySQLImpl;
 
 public class ReservationView extends CustomFrame {
 
@@ -41,7 +41,7 @@ public class ReservationView extends CustomFrame {
 
 	public ReservationView(String username, int fieldID, FieldType ft) {
 
-		ReservationDAOImpl dao = new ReservationDAOImpl(connection);
+		ReservationDAOMySQLImpl dao = new ReservationDAOMySQLImpl(connection);
 		reservedTimes = dao.getReservationTimesByFieldID(fieldID);
 		reserved = new HashMap<>();
 		for(LocalDateTime time: reservedTimes) {

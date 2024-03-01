@@ -4,7 +4,7 @@ import java.sql.Connection;
 
 import model.Role;
 import model.User;
-import model.UserDAOImpl;
+import model.UserDAOMySQLImpl;
 import util.HashedPassword;
 
 public class SignUpController {
@@ -28,7 +28,7 @@ public class SignUpController {
 		}
 
 		User u = new User(username, HashedPassword.getHashedPassword(firstPassword), Role.NORMAL);
-		UserDAOImpl dao = new UserDAOImpl(connection);
+		UserDAOMySQLImpl dao = new UserDAOMySQLImpl(connection);
 		long rows = dao.insertUser(u);
 		if (rows == 0) {
 			
@@ -46,7 +46,7 @@ public class SignUpController {
 			return USER_ALREADY_EXISTS; 
 		}
 		User u = new User(username, HashedPassword.getHashedPassword(firstPassword), Role.ADMIN);
-		UserDAOImpl dao = new UserDAOImpl(connection);
+		UserDAOMySQLImpl dao = new UserDAOMySQLImpl(connection);
 		long rows = dao.insertUser(u);
 		if (rows == 0) {
 			
@@ -56,7 +56,7 @@ public class SignUpController {
 	}
 	
 	private static boolean checkIfUserExists(Connection connection, String username) {
-		UserDAOImpl dao = new UserDAOImpl(connection);
+		UserDAOMySQLImpl dao = new UserDAOMySQLImpl(connection);
 		User u = dao.getUserByUsername(username);
 		return u != null;
 	}

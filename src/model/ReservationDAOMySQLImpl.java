@@ -12,10 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class ReservationDAOImpl implements ReservationDAO {
+public class ReservationDAOMySQLImpl implements ReservationDAO {
     Connection connection;
 
-    public ReservationDAOImpl(Connection connection){
+    public ReservationDAOMySQLImpl(Connection connection){
         this.connection = connection;
     }
 

@@ -17,7 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import model.FieldDAOImpl;
+import model.FieldDAOMySQLImpl;
 import model.FieldType;
 
 public class ChooseSportView extends CustomFrame {
@@ -58,7 +58,7 @@ public class ChooseSportView extends CustomFrame {
 	}
 
 	private void setUpButtons(JPanel panel) {
-		FieldDAOImpl fDAO = new FieldDAOImpl(connection);
+		FieldDAOMySQLImpl fDAO = new FieldDAOMySQLImpl(connection);
 		List<FieldType> fields = fDAO.getFieldTypes();
 		for (FieldType ft : fields) {
 			Path filePath = Paths.get("src", "assests", ft.toString() + ".png");
