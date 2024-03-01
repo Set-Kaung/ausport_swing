@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import controller.LoginController;
+import model.Role;
 
 public class LoginView extends CustomFrame {
 	private static final long serialVersionUID = 1L;
@@ -83,8 +84,17 @@ public class LoginView extends CustomFrame {
 				String password = String.valueOf(passwordField.getPassword());
 				if (LoginController.AuthenticateUser(connection, username, password)) {
 					JOptionPane.showMessageDialog(loginBtn, "Login Successful!");
-					new PrimaryView(username);
-					dispose();
+					switch(LoginController.GetUserRole(connection,username)){
+					case Role.NORMAL:
+						new PrimaryView(username);
+						dispose();
+						break;
+					case Role.ADMIN:
+						new AdminView();
+						dispose();
+						break;
+					}
+					
 				} else {
 					JOptionPane.showMessageDialog(loginBtn, "Wrong Username or Password", "Login Failed!",
 							JOptionPane.ERROR_MESSAGE);

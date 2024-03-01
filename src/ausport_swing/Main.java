@@ -3,12 +3,13 @@ package ausport_swing;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+
 import view.CustomFrame;
 import view.LoginView;
 
 public class Main {
 	
-	//Baketball.png taken from - https://pngtree.com/freepng/basketball-players_4993343.html
+
 	
 	
 
@@ -22,9 +23,7 @@ public class Main {
 		
 		try {
 		Connection connection = DriverManager.getConnection(connectionString,user,password);
-		
 		CustomFrame.setConnection(connection);
-		
 		new LoginView();
 		
 		

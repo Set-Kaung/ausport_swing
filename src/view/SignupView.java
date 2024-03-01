@@ -56,9 +56,11 @@ public class SignupView extends CustomFrame {
 
 			@Override
 			public void focusGained(FocusEvent e) {
-				usernameField.setText("");
-				usernameField.setForeground(Color.BLACK);
-				usernameField.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+				if(usernameField.getText().equals("u6xxxxxx")) {
+					usernameField.setText("");
+				}
+					usernameField.setForeground(Color.BLACK);
+					usernameField.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 			}
 
 			@Override

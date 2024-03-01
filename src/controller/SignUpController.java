@@ -37,6 +37,24 @@ public class SignUpController {
 		return SUCCESS;
 	}
 	
+	public static int addAdmin(Connection connection, String username, String firstPassword, String secondPassword) {
+		if (!firstPassword.equals(secondPassword)) {
+			return PASSWORD_NOT_MATCH;
+		}
+		
+		if(checkIfUserExists(connection, username)) {
+			return USER_ALREADY_EXISTS; 
+		}
+		User u = new User(username, HashedPassword.getHashedPassword(firstPassword), Role.ADMIN);
+		UserDAOImpl dao = new UserDAOImpl(connection);
+		long rows = dao.insertUser(u);
+		if (rows == 0) {
+			
+			return DATABASE_ERROR;
+		}
+		return SUCCESS;
+	}
+	
 	private static boolean checkIfUserExists(Connection connection, String username) {
 		UserDAOImpl dao = new UserDAOImpl(connection);
 		User u = dao.getUserByUsername(username);

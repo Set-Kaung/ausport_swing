@@ -56,7 +56,7 @@ public class FieldDAOImpl implements FieldDAO {
 			while (set.next()) {
 				int id = set.getInt("id");
 				int capacity = set.getInt("capacity");
-				String type = set.getString("type");
+				FieldType type = FieldType.valueOf(set.getString("type"));
 				Field f = new Field(id, capacity, type);
 				fields.add(f);
 			}
@@ -77,7 +77,7 @@ public class FieldDAOImpl implements FieldDAO {
 			while (set.next()) {
 				int id = set.getInt("id");
 				int capacity = set.getInt("capacity");
-				String type = set.getString("type");
+				FieldType type = FieldType.valueOf(set.getString("type"));
 				Field f = new Field(id, capacity, type);
 				fields.add(f);
 			}
@@ -104,5 +104,19 @@ public class FieldDAOImpl implements FieldDAO {
 		}
 
 		return fieldTypes;
+	}
+
+	@Override
+	public long insertField(Field f) {
+		String query = "INSERT INTO fields (capacity, type) VALUES(?,?)";
+		try {
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setInt(1,f.getCapcity());
+			stmt.setString(2, f.getType().toString());
+			return stmt.executeUpdate();
+		}catch(Exception e) {
+			
+		}
+		return 0;
 	}
 }

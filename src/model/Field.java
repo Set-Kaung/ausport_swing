@@ -9,10 +9,15 @@ public class Field {
     private FieldType type;
     
 
-    public Field(int fieldID, int capacity, String type){
+    public Field(int fieldID, int capacity, FieldType type){
         this.fieldID = fieldID;
         this.capcity = capacity;
-        this.type = FieldType.valueOf(type);
+        this.type = type;
+    }
+    
+    public Field(int capacity, FieldType type) {
+    	this.capcity = capacity;
+    	this.type = type;
     }
 
     public int getFieldID() {

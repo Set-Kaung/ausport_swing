@@ -90,7 +90,7 @@ public class ReservationDAOImpl implements ReservationDAO {
                 LocalDateTime endTime = s.getTimestamp("endTime").toLocalDateTime();
                 Reservation r = new Reservation(id, fieldID, userName, dateTime, endTime);
                 	int capacity = s.getInt("capacity");
-                	String type = s.getString("type");
+                	FieldType type = FieldType.valueOf(s.getString("type"));
                 	Field f = new Field(fieldID,capacity,type);
                 	userReservations.put(r, f);
             }
