@@ -11,9 +11,6 @@ public enum FieldType{
     FieldType(String t){
         type = t;
     }
-    String getType(){
-        return type;
-    }
     
     public String toString() {
     	return this.type;

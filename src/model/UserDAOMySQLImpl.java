@@ -19,44 +19,6 @@ public class UserDAOMySQLImpl implements UserDAO {
         this.connection = connection;
     }
     
-    @Override
-    public void setup() {
-       String query = "CREATE TABLE users (username CHAR(8) NOT NULL, hash VARBINARY(32) NOT NULL, salt VARBINARY(16) NOT NULL, role VARCHAR(30) NOT NULL, PRIMARY KEY (username));";
-       try {
-    	   Statement stmt = connection.createStatement();
-    	   stmt.executeUpdate(query); 
-       }catch(SQLException e) {
-    	   System.out.println(e.getErrorCode());
-       }
-        
-    }
-
-    @Override
-    public boolean checkConnection() throws Exception {
-        try{
-            if(connection == null){
-                return false;
-            }else{
-                return connection.isValid(5);
-            }
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        return false;
-    }
-
-    @Override
-    public void close() throws Exception {
-       if(this.checkConnection()){
-            connection.close();
-       }
-       try {
-        DriverManager.getConnection("jdbc:mysql://localhost:3306/AUSport?shutdown=true", "au_admin", "admin1234");
-    }
-    catch (Exception e) {
-        e.printStackTrace();
-    }
-    }
 
     @Override
     public long insertUser(User u) {
@@ -115,7 +77,7 @@ public class UserDAOMySQLImpl implements UserDAO {
                 byte[] hash = s.getBytes("hash");
                 byte[] salt = s.getBytes("salt");
                 String role = s.getString("role");
-                User u = new User(username, new HashedPassword(hash, salt), Role.getRole(role));
+                User u = new User(username, new HashedPassword(hash, salt), Role.valueOf(role));
                 users.add(u);
             }
         }catch(SQLException e){
@@ -139,7 +101,7 @@ public class UserDAOMySQLImpl implements UserDAO {
                 byte[] hash = s.getBytes("hash");
                 byte[] salt = s.getBytes("salt");
                 String role = s.getString("role");
-                User u = new User(userName,new HashedPassword(hash, salt), Role.getRole(role));
+                User u = new User(userName,new HashedPassword(hash, salt), Role.valueOf(role));
                 return u;
             }
        } catch (Exception e) {

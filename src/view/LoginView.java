@@ -85,11 +85,11 @@ public class LoginView extends CustomFrame {
 				if (LoginController.AuthenticateUser(connection, username, password)) {
 					JOptionPane.showMessageDialog(loginBtn, "Login Successful!");
 					switch(LoginController.GetUserRole(connection,username)){
-					case Role.NORMAL:
+					case Role.Normal:
 						new PrimaryView(username);
 						dispose();
 						break;
-					case Role.ADMIN:
+					case Role.Admin:
 						new AdminView();
 						dispose();
 						break;

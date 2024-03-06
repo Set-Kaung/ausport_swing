@@ -1,10 +1,10 @@
 package model;
 
 public enum Role{
-    ADMIN("Admin"),
-    NORMAL("Normal");
+    Admin("Admin"),
+    Normal("Normal");
 
-    public final String label;
+    private final String label;
 
     private Role(String label) {
         this.label = label;
@@ -12,14 +12,6 @@ public enum Role{
 
     public String toString(){
         return this.label;
-    }
-    public static Role getRole(String role){
-        switch (role) {
-            case "Admin":
-                return ADMIN;
-            default:
-                return NORMAL;
-        }
     }
 }
 

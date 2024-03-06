@@ -14,37 +14,6 @@ public class FieldDAOMySQLImpl implements FieldDAO {
 		this.connection = connection;
 	}
 
-	@Override
-	public void setup() throws Exception {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'setup'");
-	}
-
-	@Override
-	public boolean checkConnection() throws Exception {
-		try {
-			if (connection == null) {
-				return false;
-			} else {
-				return connection.isValid(5);
-			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return false;
-	}
-
-	@Override
-	public void close() throws Exception {
-		if (!connection.isClosed()) {
-			connection.close();
-		}
-		try {
-			checkConnection();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-	}
 
 	@Override
 	public List<Field> getAllFields() {
@@ -72,7 +41,7 @@ public class FieldDAOMySQLImpl implements FieldDAO {
 		List<Field> fields = new ArrayList<>();
 		try {
 			PreparedStatement stmt = connection.prepareStatement(query);
-			stmt.setString(1, fType.getType());
+			stmt.setString(1, fType.toString());
 			ResultSet set = stmt.executeQuery();
 			while (set.next()) {
 				int id = set.getInt("id");

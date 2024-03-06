@@ -27,7 +27,7 @@ public class SignUpController {
 			return USER_ALREADY_EXISTS; 
 		}
 
-		User u = new User(username, HashedPassword.getHashedPassword(firstPassword), Role.NORMAL);
+		User u = new User(username, HashedPassword.getHashedPassword(firstPassword), Role.Normal);
 		UserDAOMySQLImpl dao = new UserDAOMySQLImpl(connection);
 		long rows = dao.insertUser(u);
 		if (rows == 0) {
@@ -45,7 +45,7 @@ public class SignUpController {
 		if(checkIfUserExists(connection, username)) {
 			return USER_ALREADY_EXISTS; 
 		}
-		User u = new User(username, HashedPassword.getHashedPassword(firstPassword), Role.ADMIN);
+		User u = new User(username, HashedPassword.getHashedPassword(firstPassword), Role.Admin);
 		UserDAOMySQLImpl dao = new UserDAOMySQLImpl(connection);
 		long rows = dao.insertUser(u);
 		if (rows == 0) {

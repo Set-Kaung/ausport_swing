@@ -3,7 +3,6 @@ package ausport_swing;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-
 import view.CustomFrame;
 import view.LoginView;
 
@@ -30,7 +29,6 @@ public class Main {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 }

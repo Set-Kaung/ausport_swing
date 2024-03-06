@@ -20,39 +20,6 @@ public class ReservationDAOMySQLImpl implements ReservationDAO {
     }
 
     @Override
-    public void setup() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setup'");
-    }
-
-    @Override
-    public boolean checkConnection() throws Exception {
-        try{
-            if(connection == null){
-                return false;
-            }else{
-                return connection.isValid(5);
-            }
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        return false;
-    }
-
-    @Override
-    public void close() throws Exception {
-        if(this.checkConnection()){
-            connection.close();
-       }
-       try {
-        DriverManager.getConnection("jdbc:mysql://localhost:3306/AUSport?shutdown=true", "au_admin", "admin1234");
-    }
-    catch (Exception e) {
-        e.printStackTrace();
-    }
-    }
-
-    @Override
     public List<Reservation> getAllReservations() {
        List<Reservation> reservations = new ArrayList<>();
         String query = "SELECT * FROM reservations";
@@ -76,11 +43,13 @@ public class ReservationDAOMySQLImpl implements ReservationDAO {
 
     @Override
     public HashMap<Reservation, Field> getReservationsByUsername(String username) {
-        String query = "SELECT r.id,r.fieldID,r.username,r.startTime,r.endTime,f.capacity,f.`type` FROM reservations r LEFT JOIN fields f ON r.fieldID  = f.id WHERE username = ?;";
+    	LocalDateTime dt = LocalDateTime.now();
+        String query = "SELECT r.id,r.fieldID,r.username,r.startTime,r.endTime,f.capacity,f.`type` FROM reservations r LEFT JOIN fields f ON r.fieldID  = f.id WHERE username = ? AND endTime > ?;";
         HashMap<Reservation, Field> userReservations = new HashMap<>();
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, username);
+            stmt.setTimestamp(2, Timestamp.valueOf(dt));
             ResultSet s = stmt.executeQuery();
             while(s.next()){
                 int id = s.getInt("id");
@@ -88,6 +57,7 @@ public class ReservationDAOMySQLImpl implements ReservationDAO {
                 String userName = s.getString("username");
                 LocalDateTime dateTime = s.getTimestamp("startTime").toLocalDateTime();
                 LocalDateTime endTime = s.getTimestamp("endTime").toLocalDateTime();
+                
                 Reservation r = new Reservation(id, fieldID, userName, dateTime, endTime);
                 	int capacity = s.getInt("capacity");
                 	FieldType type = FieldType.valueOf(s.getString("type"));
